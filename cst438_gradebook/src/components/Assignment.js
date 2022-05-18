@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import Cookies from 'js-cookie';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import {DataGrid} from '@mui/x-data-grid';
 import {SERVER_URL} from '../constants.js'
+import AddAssignment from './AddAssignment';
+import {ButtonGroup} from '@mui/material';
 
 // NOTE:  for OAuth security, http request must have
 //   credentials: 'include' 
@@ -48,6 +54,39 @@ class Assignment extends React.Component {
     console.log("Assignment.onRadioClick " + event.target.value);
     this.setState({selected: event.target.value});
   }
+
+  addAssignment = (assignment,id) => {
+    const token = Cookies.get('XSRF-TOKEN');
+
+    fetch(`${SERVER_URL}/assignment/${id}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': token
+      },
+      body: JSON.stringify(assignment)
+    })
+    .then(res => {
+      if (res.ok) {
+                    toast.success("Assignment successfully added", {
+                        position: toast.POSITION.BOTTOM_LEFT
+                    });
+
+                } else {
+                    toast.error(`Error adding assignment`, {
+                        position: toast.POSITION.BOTTOM_LEFT
+                    });
+                    console.error('Post http status =' + res.status);
+                }
+            })
+            .catch(err => {
+                toast.error("Error when adding", {
+                    position: toast.POSITION.BOTTOM_LEFT
+                });
+                console.error(err);
+            })
+  }
   
   render() {
      const columns = [
@@ -78,11 +117,16 @@ class Assignment extends React.Component {
             <h4>Assignment(s) ready to grade: </h4>
               <div style={{ height: 450, width: '100%', align:"left"   }}>
                 <DataGrid rows={this.state.assignments} columns={columns} />
-              </div>                
-            <Button component={Link} to={{pathname:'/gradebook',   assignment: assignmentSelected }} 
-                    variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
-              Grade
-            </Button>
+              </div>    
+              <ButtonGroup>            
+                <Button component={Link} 
+                      to={{pathname:'/gradebook',   
+                      assignment: assignmentSelected }} 
+                  variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
+                  Grade
+                </Button>
+                <AddAssignment addAssignment={this.addAssignment} />
+              </ButtonGroup> 
             <ToastContainer autoClose={1500} /> 
           </div>
       )
