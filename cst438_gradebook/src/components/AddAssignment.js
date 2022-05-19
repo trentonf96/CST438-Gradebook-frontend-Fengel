@@ -26,7 +26,7 @@ class AddAssignment extends Component {
 
 	handleClose = () => {
 		this.setState({ open: false });
-		window.location.reload(false);
+		
 	};
 
 	handleChange = (e) => {
