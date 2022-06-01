@@ -54,8 +54,8 @@ class AddAssignment extends Component {
                     <DialogTitle>New Assignment</DialogTitle>
                     <DialogContent style={{ paddingTop: 20 }} >
                         <TextField autoFocus fullWidth label="Name" name="assignmentName" onChange={this.handleChange} margin="normal" />
-                        <TextField autoFocus fullWidth label="Due Date (YYYY-MM-DD)" name="dueDate" onChange={this.handleChange} margin="normal" />
-                        <TextField autoFocus fullWidth label="Course ID (6-digits)" name="courseId" onChange={this.handleChange} margin="normal" />
+                        <TextField fullWidth label="Due Date (YYYY-MM-DD)" name="dueDate" onChange={this.handleChange} margin="normal" />
+                        <TextField fullWidth label="Course ID (6-digits)" name="courseId" onChange={this.handleChange} margin="normal" />
                     </DialogContent>
                     <DialogActions>
                         <Button color="secondary" onClick={this.handleClose}>Cancel</Button>
