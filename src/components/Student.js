@@ -14,7 +14,7 @@ import {ButtonGroup} from '@mui/material';
 //   credentials: 'include' 
 //
 
-class Assignment extends React.Component {
+class Student extends React.Component {
     constructor(props) {
       super(props);
       this.state = {selected: 0, assignments: []};
@@ -112,23 +112,21 @@ class Assignment extends React.Component {
       const assignmentSelected = this.state.assignments[this.state.selected];
       return (
           <div align="left" >
-            <h4>Assignment(s) ready to grade: </h4>
+            <h4>Select an Assignment: </h4>
               <div style={{ height: 450, width: '100%', align:"left"   }}>
                 <DataGrid rows={this.state.assignments} columns={columns} />
               </div>    
               <ButtonGroup>            
                 <Button component={Link} 
-                      to={{pathname:'/gradebook',   
+                      to={{pathname:'/grades',   
                       assignment: assignmentSelected }} 
                   variant="outlined" color="primary" disabled={this.state.assignments.length===0}  style={{margin: 10}}>
-                  Grade
+                  View Grade
                 </Button>
-                <AddAssignment addAssignment={this.addAssignment} />
               </ButtonGroup> 
-            <ToastContainer autoClose={1500} /> 
           </div>
       )
   }
 }  
 
-export default Assignment;
+export default Student;
